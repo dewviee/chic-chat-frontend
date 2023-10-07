@@ -1,10 +1,10 @@
+import Chat from './Chat'
+import { Routes ,Route } from 'react-router-dom';
 function App() {
   return (
-    <div className='flex justify-center'>
-      <h1 className="text-3xl text-red-400 font-bold underline">
-        Hello world!
-      </h1>
-    </div>
+    <Routes>
+      <Route path='/room/:roomID' element={<Chat />} />
+    </Routes>
   )
 }
 
