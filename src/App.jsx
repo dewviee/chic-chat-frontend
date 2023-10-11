@@ -1,3 +1,4 @@
+import Login from './Auth/login.component';
 import Chat from './Chat'
 import { Routes ,Route } from 'react-router-dom';
 import Home from './Home/home.component';
@@ -9,7 +10,7 @@ function App() {
       <Route path='/register' element={<Register />} />
       
       <Route path='/room/:roomID' element={<Chat />} />
-      <Route path='/home' element={<Home />} />
+      <Route path='/login' element={<Login />} />
     </Routes>
   )
 }
