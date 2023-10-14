@@ -78,11 +78,10 @@ const Chat = () => {
                     md:rounded-t-[2rem] rounded-none bg-gradient-to-r from-orange to-pink"></div>
                     <div className="flex-1 px-4 py-4 overflow-y-auto bg-white">
                         {messages.map((msg, index) => {
-                        if (msg.sender == username) {
-                            const isUserMessage = msg.sender === username;
+                        if (msg.sender != username) {
                             return (
                             <div key={index}>
-                                {isUserMessage && (index ===0 || messages[index-1].sender !== username) &&(
+                                {(index === 0 || messages[index-1].sender !== messages[index].sender) &&(
                                     <a className="font-['Inter'] block text-xs px-2 mb-1">{username}</a>
                                 )}
                                 <div className="flex items-center mb-2">
@@ -99,11 +98,7 @@ const Chat = () => {
                         else {
                             return (
                                 <div key={index}>
-                                   
                                     <div className="flex items-end flex-col mb-4">
-                                        {index === 0 || messages[index - 1].sender !== msg.sender && (
-                                            <div><a className="font-['Inter'] block text-xs px-2 mb-1">{msg.sender}</a></div>
-                                        )}
                                         <div className="mb-2 p-2 py-4 relative rounded-3xl bg-[#CACACA] text-gray-800">
                                             <div>{msg.message}</div>
             
