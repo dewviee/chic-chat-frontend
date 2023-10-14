@@ -94,7 +94,7 @@ const Chat = () => {
                             return (
                             <div key={index}>
                                 {(index === 0 || messages[index-1].sender !== messages[index].sender) &&(
-                                    <a className="font-['Inter'] block text-xs px-2 mb-1">{username}</a>
+                                    <a className="font-['Inter'] block text-xs px-2 mb-1">{msg.sender}</a>
                                 )}
                                 <div className="flex items-center mb-2">
                                     <div className="max-w-[80%] mx-4 p-2 py-4 mb-2 relative
@@ -116,9 +116,7 @@ const Chat = () => {
                                 <div key={index}>
                                     <div className="flex items-end flex-col mb-4">
                                         <div className="max-w-[80%] mx-4 mb-2 p-2 py-4 relative rounded-3xl bg-[#CACACA] text-gray-800">
-                                            
                                             <div class="break-words">{msg.message}</div>
-            
                                             {/* <!-- arrow --> */}
                                             <div className="absolute right-0 top-1/2 transform translate-x-1/2 rotate-45 w-2 h-2 
                                             bg-[#CACACA]"></div>
