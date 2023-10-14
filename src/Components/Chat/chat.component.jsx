@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import { useParams } from "react-router-dom";
 import { IoSendSharp } from 'react-icons/io5';
 
@@ -8,6 +8,7 @@ const Chat = () => {
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [socket, setSocket] = useState(null); // Declare socket variable
+    const chatContainerRef = useRef(null);
 
     // Connect to the websocket server
     useEffect(() => {
@@ -28,6 +29,7 @@ const Chat = () => {
         newSocket.close();
         };
     }, [roomID]);
+
     
     // Listen for messages
     useEffect(() => {
@@ -64,6 +66,15 @@ const Chat = () => {
     const onMessageChange = (event) => {
         setMessage(event.target.value);
     }
+
+    // Function to scroll to the bottom of the chat container
+    const scrollToBottom = () => {
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    };
+
+    // Scroll to the bottom whenever new messages arrive or a new message is sent
+    useEffect(scrollToBottom, [messages]);
+
     return (
         <div className="flex flex-col min-h-screen">
             <div className="flex flex-row">
@@ -73,10 +84,11 @@ const Chat = () => {
             <div className="flex justify-center mt-auto">
                 {/* <!-- chat box --> */}
                 <div className="w-full md:w-[70rem] h-[45rem] flex flex-col
-                 drop-shadow-[10px_5px_5px_rgba(0,0,0,0.25)] overflow-auto touch-pan-y">
+                 drop-shadow-[10px_5px_5px_rgba(0,0,0,0.25)]">
                     <div className="flex items-center justify-between p-8 
                     md:rounded-t-[2rem] rounded-none bg-gradient-to-r from-orange to-pink"></div>
-                    <div className="flex-1 px-4 py-4 overflow-y-auto bg-white">
+                    <div className="flex-1 px-4 py-4 [&::-webkit-scrollbar]:hidden overflow-y-auto bg-white"
+                    ref={chatContainerRef}>
                         {messages.map((msg, index) => {
                         if (msg.sender != username) {
                             return (
@@ -85,12 +97,16 @@ const Chat = () => {
                                     <a className="font-['Inter'] block text-xs px-2 mb-1">{username}</a>
                                 )}
                                 <div className="flex items-center mb-2">
-                                    <div className="p-2 py-4 mb-2 relative 
+                                    <div className="max-w-[80%] mx-4 p-2 py-4 mb-2 relative
                                     rounded-3xl bg-gradient-to-r from-orange to-pink text-white">
-                                        <div key={index}>{msg.message}</div>
+
+                                        <div class="break-words" key={index}>{msg.message}</div>
+
                                         {/* <!-- arrow --> */}
                                         <div className="absolute left-0 top-1/2 transform -translate-x-1/2 rotate-45 w-2 h-2 
                                         bg-gradient-to-r from-orange to-pink"></div>
+                                        {/* <!-- end arrow --> */}
+
                                     </div>
                                 </div>
                             </div>)
@@ -99,8 +115,9 @@ const Chat = () => {
                             return (
                                 <div key={index}>
                                     <div className="flex items-end flex-col mb-4">
-                                        <div className="mb-2 p-2 py-4 relative rounded-3xl bg-[#CACACA] text-gray-800">
-                                            <div>{msg.message}</div>
+                                        <div className="max-w-[80%] mx-4 mb-2 p-2 py-4 relative rounded-3xl bg-[#CACACA] text-gray-800">
+                                            
+                                            <div class="break-words">{msg.message}</div>
             
                                             {/* <!-- arrow --> */}
                                             <div className="absolute right-0 top-1/2 transform translate-x-1/2 rotate-45 w-2 h-2 
