@@ -81,7 +81,7 @@ const Register = () => {
 
                             <button className="font-['Inter'] text-white py-4 px-8 md:px-14
                             rounded-full bg-gradient-to-r from-orange to-pink" 
-                            type="button">Confirm</button>
+                            type="button">CONFIRM</button>
                           </div>
                     </div>
                 </form>
