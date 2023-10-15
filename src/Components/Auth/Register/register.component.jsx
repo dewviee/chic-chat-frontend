@@ -1,55 +1,93 @@
-function Register(){
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-          <div className="bg-white p-8 rounded-lg shadow-md w-96">
-            <h2 className="text-2xl font-semibold mb-4">Register</h2>
-            <form>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-                  Name
-                </label>
-                <input
-                  className="w-full border rounded py-2 px-3 
-                    text-gray-700 leading-tight focus:outline-none focus:shadow-md"
-                  id="name"
-                  type="text"
-                  placeholder="Name"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-                  Email
-                </label>
-                <input
-                  className="w-full border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="email"
-                  type="email"
-                  placeholder="Email"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-                  Password
-                </label>
-                <input
-                  className="w-full border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="password"
-                  type="password"
-                  placeholder="Password"
-                />
-              </div>
-              <div className="mb-4">
-                <button
-                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  type="submit"
-                >
-                  Register
-                </button>
-              </div>
-            </form>
-          </div>
+import React from "react";
+
+const Register = () => {
+  return(
+    <div className="flex flex-col min-h-screen">
+            <div className="flex flex-row">
+                <img className="h-10 w-10 mt-3 ml-5" src="/assets/images/logo.png" alt="Logo" />
+                <p className="mt-4 ml-2 font-['Inter'] font-semibold text-[22px] 
+                text-white">ChicChat</p>
+            </div>
+
+            {/* when responsive in phone will appearance */}
+            <div className="md:hidden">
+              <p className="font-['Inter'] font-bold text-[3rem] text-center mt-[3rem]
+                bg-gradient-to-r from-orange to-pink text-transparent bg-clip-text
+                drop-shadow-[6px_5px_5px_rgba(0,0,0,0.7)] absolute inset-x-0 top-20">REGISTER</p>
+            </div>
+
+            <div className="flex flex-col flex-1 justify-center items-center">
+
+                <form className="block w-[23rem] h-[28rem] md:w-[35rem] md:h-[35rem] mb-30 md:mb-20 
+                rounded-[60px] bg-greylight shadow-[16px_19px_14px_-0_rgba(0,0,0,0.25)] relative" 
+                action="#" method="POST">
+
+                <div className="hidden md:block">
+                  <p className="font-['Inter'] font-bold text-[3rem] text-center mt-10
+                  bg-gradient-to-r from-orange to-pink text-transparent bg-clip-text
+                  drop-shadow-[6px_5px_5px_rgba(0,0,0,0.7)]">REGISTER</p>
+                </div>
+
+                    <div className="flex flex-col items-center justify-center mt-3 md:mt-0">
+
+                        <input
+                            id="username"
+                            name="username"
+                            type="usernamee"
+                            autoComplete="username"
+                            required
+                            placeholder="Username"
+                            className="w-80 md:w-96 border rounded-full md:rounded-2xl py-4 px-5 mt-6
+                            text-gray-700 leading-tight focus:outline-none focus:shadow-md"
+                            />
+
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            autoComplete="email"
+                            required
+                            placeholder="E-mail"
+                            className="w-80 md:w-96 border rounded-full md:rounded-2xl py-4 px-5 mt-6
+                            text-gray-700 leading-tight focus:outline-none focus:shadow-md"
+                            />
+
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            autoComplete="password"
+                            required
+                            placeholder="Password"
+                            className="w-80 md:w-96 border rounded-full md:rounded-2xl py-4 px-5 mt-6
+                            text-gray-700 leading-tight focus:outline-none focus:shadow-md"
+                            />
+
+                        <input
+                            id="confirmpassword"
+                            name="confirmpassword"
+                            type="password"
+                            autoComplete="confirmpassword"
+                            required
+                            placeholder="Confirm Password"
+                            className="w-80 md:w-96 border rounded-full md:rounded-2xl py-4 px-5 mt-6
+                            text-gray-700 leading-tight focus:outline-none focus:shadow-md"
+                            />
+
+                          <div className="flex flex-row justify-center items-center space-x-3 md:space-x-8 w-80 md:w-96 mt-10">
+                            <button className="font-['Inter'] text-white py-4 px-8 md:px-14
+                            rounded-full bg-gradient-to-r from-green to-blue" 
+                            type="button">CANCEL</button>
+
+                            <button className="font-['Inter'] text-white py-4 px-8 md:px-14
+                            rounded-full bg-gradient-to-r from-orange to-pink" 
+                            type="button">Confirm</button>
+                          </div>
+                    </div>
+                </form>
+            </div>
         </div>
-      );
+  )
 }
 
-export default Register
+export default Register;
