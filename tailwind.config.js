@@ -10,6 +10,8 @@ export default {
         'pink': '#FF3778',
         'orange': '#FF5A37',
         'greylight': '#D9D9D921',
+        'green': '#177537',
+        'blue': '#2734AD',
       },
       screens: {
         'sm': '576px',
