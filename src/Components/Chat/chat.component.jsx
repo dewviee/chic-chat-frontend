@@ -2,8 +2,14 @@ import React, {useState, useEffect, useRef} from "react";
 import { useParams } from "react-router-dom";
 import { IoPersonCircleSharp } from 'react-icons/io5';
 import { IoSendSharp } from 'react-icons/io5';
+import axios from "axios";
 
 const Chat = () => {
+    const protocol = import.meta.env.VITE_SERVER_PROTOCOL
+    const hostname = import.meta.env.VITE_SERVER_HOST
+    const port = import.meta.env.VITE_SERVER_PORT
+
+
     const [username, setUsername] = useState(""); // State variable for username
     const { roomID } = useParams();
     const [message, setMessage] = useState("");
@@ -15,20 +21,43 @@ const Chat = () => {
     useEffect(() => {
         if (username == ""){
         const inputUsername = prompt("Please enter something:", "Default Text")
-        setUsername(inputUsername)
+            setUsername(inputUsername)
         }              
-        const hostname = `${import.meta.env.VITE_SERVER_HOST}`
-        const port = import.meta.env.VITE_SERVER_PORT
-        const newSocket = new WebSocket(`ws://${hostname}:${port}/room/${roomID}`);
-        setSocket(newSocket); // Set the socket in state
-    
-        newSocket.onclose = (event) => {
-        console.log(event.code)
-        }
 
-        return () => {
-        newSocket.close();
-        };
+        axios.get(`${protocol}://${hostname}:${port}/room/${roomID}/check`)
+            .then((res) => {
+                // This is when room is found and not full Continue to connect to websocket
+                console.log(res.data.message)
+                const newSocket = new WebSocket(`ws://${hostname}:${port}/room/${roomID}`);
+                setSocket(newSocket); // Set the socket in state
+            
+                newSocket.onclose = (event) => {
+                    console.log(`WebSocket closed with code: ${event.code}`);
+                    console.log(`WebSocket closed with reason: ${event.reason}`);
+                }
+                return () => {
+                    newSocket.close();
+                };
+            }).catch((err) => {
+                console.log(err.response.data.message)
+                if (err.response.status == 409){
+                    // This is when room is full. Alert user and return
+                    alert("Room full!")
+                    return
+                } else if (err.response.status == 404){
+                    // This is when room not found. Just continue to connect to websocket
+                    const newSocket = new WebSocket(`ws://${hostname}:${port}/room/${roomID}`);
+                    setSocket(newSocket); // Set the socket in state
+                
+                    newSocket.onclose = (event) => {
+                        console.log(`WebSocket closed with code: ${event.code}`);
+                        console.log(`WebSocket closed with reason: ${event.reason}`);
+                    }
+                    return () => {
+                        newSocket.close();
+                    };
+                }
+            })
     }, [roomID]);
 
     
