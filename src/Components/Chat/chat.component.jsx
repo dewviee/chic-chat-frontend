@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from "react";
 import { useParams } from "react-router-dom";
+import { IoPersonCircleSharp } from 'react-icons/io5';
 import { IoSendSharp } from 'react-icons/io5';
 
 const Chat = () => {
@@ -80,6 +81,12 @@ const Chat = () => {
             <div className="flex flex-row">
                 <img className="h-10 w-10 mt-3 ml-5" src="/assets/images/logo.png" alt="Logo" />
                 <p className="mt-4 ml-2 font-['Inter'] font-semibold text-[22px] text-white">ChicChat</p>
+                <button
+                    className="!absolute right-5 mt-3 justify-self-end"
+                    type="button"
+                    >
+                    <IoPersonCircleSharp size={80} color="white"/>
+                </button>
             </div>
             <div className="flex justify-center mt-auto">
                 {/* <!-- chat box --> */}
