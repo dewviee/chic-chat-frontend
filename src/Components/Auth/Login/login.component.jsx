@@ -34,7 +34,7 @@ const Login = () => {
                         <input
                             id="username"
                             name="username"
-                            type="usernamee"
+                            type="username"
                             autoComplete="username"
                             required
                             placeholder="Username"
@@ -56,7 +56,7 @@ const Login = () => {
                             <div>
                                 <button className="font-['Inter'] text-white py-4 px-16 mt-6
                                 rounded-full bg-gradient-to-r from-orange to-pink mx-8" 
-                                type="button">Login</button>
+                                type="button">LOGIN</button>
                             </div>
 
                             <div className="hidden md:block">

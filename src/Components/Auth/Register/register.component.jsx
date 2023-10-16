@@ -33,7 +33,7 @@ const Register = () => {
                         <input
                             id="username"
                             name="username"
-                            type="usernamee"
+                            type="username"
                             autoComplete="username"
                             required
                             placeholder="Username"
