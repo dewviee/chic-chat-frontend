@@ -1,32 +1,21 @@
-import React, { useRef } from "react";
-import { IoPersonCircleSharp } from 'react-icons/io5';
+import React from "react";
+import Logo from "../Logo/logo.componnet";
 
 const EditProfile = () => {
 
     return(
         <div className="flex flex-col min-h-screen">
-            <div className="flex flex-row">
-                <img className="h-10 w-10 mt-3 ml-5" src="/assets/images/logo.png" alt="Logo" />
-                <p className="mt-4 ml-2 font-['Inter'] font-semibold text-[22px] text-white">ChicChat</p>
-            </div>
+            <Logo />
 
             <div className="flex flex-col flex-1 justify-center items-center">
                 <form className="w-0 h-0 sm:max-w-[60%] md:w-[45rem] md:h-[38rem] mb-20 flex flex-col items-center justify-center 
                 rounded-[60px] bg-transparent md:bg-greylight shadow-[16px_19px_14px_-0_rgba(0,0,0,0.25)] relative" action="#" method="POST">
 
                     <div className="flex flex-col items-center justify-center">
-        
                         <label className="cursor-pointer text-blue-500">
-                            <div className="grid justify-items-stretch relative">
-                                <IoPersonCircleSharp size={180} color="white" />
-                                <input className="hidden" type="file" />
-                                <div className="!absolute font-['Inter'] text-lg text-center 
-                                justify-self-center self-end mb-4
-                                w-36 h-20 rounded-bl-full rounded-br-full bg-[#BFBFBF]"
-                                >Edit</div>
-                            </div>
+                            <img className="h-40 w-40 mt-3" src="/assets/images/userPic.png" alt="UserPic" />
+                            <input className="hidden" type="file" />
                         </label>
-                        
         
                         <div className="flex flex-row mt-8 md:mt-10">
 
