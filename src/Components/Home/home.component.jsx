@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Logo from "../Logo/logo.componnet";
 import ProfilePicture from "../ProfilePicture/profile-picture.component";
 
@@ -23,21 +24,25 @@ const Home = () => {
               autoFocus
             />
           </div>
-          <div className="ml-5">
-            <button className="bg-indigo-50 rounded-full" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-16 h-16"
-                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="5"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
-            </button>
-          </div>
+          <Link to={"/createroom"}>
+            <div className="ml-5">
+              <button className="bg-indigo-50 rounded-full" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-16 h-16"
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="5"
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              </button>
+            </div>
+          </Link>
         </div>
 
         <div>
-          <button className="font-['Inter'] text-white h-16 py-3 px-16 mt-10
-            rounded-full bg-gradient-to-r from-orange to-pink mx-8"
-            type="button">CONFIRM</button>
+          <Link to={"/room/1"}>
+            <button className="font-['Inter'] text-white h-16 py-3 px-16 mt-10
+              rounded-full bg-gradient-to-r from-orange to-pink mx-8"
+              type="button">CONFIRM</button>
+          </Link>
         </div>
 
       </div>

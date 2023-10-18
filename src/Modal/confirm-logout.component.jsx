@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const ConfirmLogout = ({ closeModal }) => {
 
@@ -18,6 +19,7 @@ const ConfirmLogout = ({ closeModal }) => {
 
                         <div className="flex flex-row justify-center items-center space-x-2 
                         md:space-x-10 mt-4 md:mt-10">
+                            <Link to={"/login"}>
                             <button
                                 className="items-center text-center font-['Inter'] font-medium text-sm md:text-md text-white 
                                 bg-gradient-to-r from-green to-blue
@@ -27,6 +29,7 @@ const ConfirmLogout = ({ closeModal }) => {
                             >
                                 Yes
                             </button>
+                            </Link>
                             <button
                                 className="font-['Inter'] font-medium text-sm md:text-md text-white 
                                 bg-gradient-to-r from-orange to-pink 
