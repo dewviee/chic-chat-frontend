@@ -1,8 +1,11 @@
 import React, {useState, useEffect, useRef} from "react";
 import { useParams } from "react-router-dom";
-import { IoPersonCircleSharp } from 'react-icons/io5';
 import { IoSendSharp } from 'react-icons/io5';
+import { AiOutlinePicture } from 'react-icons/ai';
 import axios from "axios";
+import Logo from "../Logo/logo.componnet";
+import ProfilePicture from "../ProfilePicture/profile-picture.component";
+
 
 const Chat = () => {
     const protocol = import.meta.env.VITE_SERVER_PROTOCOL
@@ -108,14 +111,8 @@ const Chat = () => {
     return (
         <div className="flex flex-col min-h-screen">
             <div className="flex flex-row">
-                <img className="h-10 w-10 mt-3 ml-5" src="/assets/images/logo.png" alt="Logo" />
-                <p className="mt-4 ml-2 font-['Inter'] font-semibold text-[22px] text-white">ChicChat</p>
-                <button
-                    className="!absolute right-5 mt-3 justify-self-end"
-                    type="button"
-                    >
-                    <IoPersonCircleSharp size={80} color="white"/>
-                </button>
+                <Logo />
+                <ProfilePicture />
             </div>
             <div className="flex justify-center mt-auto">
                 {/* <!-- chat box --> */}
@@ -166,15 +163,13 @@ const Chat = () => {
                     </div>
 
                     <div className="flex justify-center p-4 bg-gradient-to-r from-orange to-pink">
-                        <div>
-                            <button className="mt-4 mr-4 hover:bg-indigo-50 rounded-full " type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" 
-                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                            </button>
+                        <div className="mt-2 mr-4">
+                            <label className="cursor-pointer text-blue-500">
+                                <AiOutlinePicture size={40} color="white" />
+                                <input className="hidden" type="file" />
+                            </label>
                         </div>
+                      
 
                         {/* <!-- chat send action --> */}
                         <div className="grid justify-items-stretch mt-2 md:mt-2 relative">

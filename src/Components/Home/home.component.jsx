@@ -1,18 +1,13 @@
 import React from "react";
-import { IoPersonCircleSharp } from 'react-icons/io5';
+import Logo from "../Logo/logo.componnet";
+import ProfilePicture from "../ProfilePicture/profile-picture.component";
 
 const Home = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex flex-row">
-        <img className="h-10 w-10 mt-3 ml-5" src="/assets/images/logo.png" alt="Logo" />
-        <p className="mt-4 ml-2 font-['Inter'] font-semibold text-[22px] text-white">ChicChat</p>
-        <button
-            className="!absolute right-5 mt-3 justify-self-end"
-            type="button"
-            >
-            <IoPersonCircleSharp size={80} color="white"/>
-        </button>
+       <Logo />
+       <ProfilePicture />
       </div>
 
       <div className="flex flex-col flex-1 justify-center items-center mb-20">
