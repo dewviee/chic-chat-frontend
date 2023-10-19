@@ -51,15 +51,17 @@ const Login = () => {
                             />
 
                             <div>
-                                <button className="font-['Inter'] text-white py-4 px-16 mt-6
-                                rounded-full bg-gradient-to-r from-orange to-pink mx-8" 
-                                type="button">LOGIN</button>
+                                <Link to={"/"}>
+                                    <button className="font-['Inter'] text-white py-4 px-16 mt-6
+                                    rounded-full bg-gradient-to-r from-orange to-pink mx-8" 
+                                    type="button">LOGIN</button>
+                                </Link>
                             </div>
 
                             <div className="hidden md:block">
                                 <div className="flex flex-row pt-8">
                                     <p className="font-['Inter'] font-semibold text-xl text-white">New user ?</p>
-                                    <Link to="#">
+                                    <Link to="/register">
                                         <p className="font-['Inter'] font-semibold text-xl text-red-600 
                                         drop-shadow-[6px_3px_2px_rgba(0,0,0,0.8)] pl-2">Create an account.</p>
                                     </Link>
@@ -72,7 +74,7 @@ const Login = () => {
                 <div className="md:hidden">
                     <div className="flex flex-row justify-center items-center pt-8 absolute inset-x-0 bottom-[12rem]">
                         <p className="font-['Inter'] font-semibold text-xl text-white">New user ?</p>
-                        <Link to="#">
+                        <Link to="/register">
                             <p className="font-['Inter'] font-semibold text-xl text-red-600 
                             drop-shadow-[6px_3px_2px_rgba(0,0,0,0.8)] pl-2">Create an account.</p>
                         </Link>

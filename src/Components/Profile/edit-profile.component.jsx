@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Logo from "../Logo/logo.componnet";
 
 const EditProfile = () => {
@@ -60,13 +61,15 @@ const EditProfile = () => {
                             </div>
                         </div>
                         
-                        <button
-                        className="font-['Inter'] text-white py-4 px-16 mt-16 md:mt-12 rounded-full 
-                        bg-gradient-to-r from-orange to-pink mx-8"
-                        type="button"
-                        >
-                        CONFIRM
-                        </button>
+                        <Link to={"/profile"}>
+                            <button
+                            className="font-['Inter'] text-white py-4 px-16 mt-16 md:mt-12 rounded-full 
+                            bg-gradient-to-r from-orange to-pink mx-8"
+                            type="button"
+                            >
+                            CONFIRM
+                            </button>
+                        </Link>
                     
                     </div>
                 </form>

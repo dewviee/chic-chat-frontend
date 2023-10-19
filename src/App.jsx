@@ -18,7 +18,7 @@ function App() {
       <Route path='/room/:roomID' element={<Chat />} />
 
       <Route path='/profile' element={<Profile />} />
-      <Route path='/EditProfile' element={<EditProfile />} />
+      <Route path='/editprofile' element={<EditProfile />} />
     </Routes>
   )
 }

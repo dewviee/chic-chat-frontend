@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Logo from "../Logo/logo.componnet";
 import ProfilePicture from "../ProfilePicture/profile-picture.component";
 
@@ -33,13 +34,17 @@ const CreateRoom = () => {
                             />
 
                           <div className="flex flex-row justify-center items-center space-x-5 md:space-x-8 w-80 md:w-96 mt-6">
-                            <button className="font-['Inter'] text-white py-4 px-8 md:px-14
-                            rounded-full bg-gradient-to-r from-green to-blue" 
-                            type="button">CANCEL</button>
+                            <Link to={"/"}>
+                                <button className="font-['Inter'] text-white py-4 px-8 md:px-14
+                                rounded-full bg-gradient-to-r from-green to-blue" 
+                                type="button">CANCEL</button>
+                            </Link>
 
-                            <button className="font-['Inter'] text-white py-4 px-8 md:px-14
-                            rounded-full bg-gradient-to-r from-orange to-pink" 
-                            type="button">CONFIRM</button>
+                            <Link to={"/"}>
+                                <button className="font-['Inter'] text-white py-4 px-8 md:px-14
+                                rounded-full bg-gradient-to-r from-orange to-pink" 
+                                type="button">CONFIRM</button>
+                            </Link>
                           </div>
                     </div>
                 </form>

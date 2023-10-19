@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { IoPersonCircleSharp } from 'react-icons/io5';
 import { BiSolidEdit } from 'react-icons/bi';
 import Logo from "../Logo/logo.componnet";
@@ -28,9 +29,9 @@ const Profile = () => {
 
                     <div className="flex flex-row">
                         <IoPersonCircleSharp size={180} color="white" />
-                        <button type="button">
-                        <BiSolidEdit size={40} md:size={50} color="white" className="mt-32 md:mt-0 md:absolute top-4 right-4" />
-                        </button>
+                        <Link to={"/editprofile"}>
+                            <BiSolidEdit size={40} md:size={50} color="white" className="mt-32 md:mt-0 md:absolute top-4 right-4" />
+                        </Link>
                     </div>
 
                     <div className="flex flex-col items-center justify-center">
