@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { IoSendSharp } from 'react-icons/io5';
 import { AiOutlinePicture } from 'react-icons/ai';
 import axios from "axios";
+import JSEncrypt from "jsencrypt";
 import Logo from "../Logo/logo.componnet";
 import ProfilePicture from "../ProfilePicture/profile-picture.component";
 
@@ -12,12 +13,17 @@ const Chat = () => {
     const hostname = import.meta.env.VITE_SERVER_HOST
     const port = import.meta.env.VITE_SERVER_PORT
 
-
     const [username, setUsername] = useState(""); // State variable for username
     const { roomID } = useParams();
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
+
     const [socket, setSocket] = useState(null); // Declare socket variable
+    const [isConnected, setIsConnected] = useState(false);
+
+    const [userPublicKey, setUserPublicKey] = useState("");
+    const [userPrivateKey, setUserPrivateKey] = useState("");
+    const [otherPublicKey, setOtherPublicKey] = useState("");
     const chatContainerRef = useRef(null);
 
     // Connect to the websocket server
@@ -29,18 +35,8 @@ const Chat = () => {
 
         axios.get(`${protocol}://${hostname}:${port}/room/${roomID}/check`)
             .then((res) => {
-                // This is when room is found and not full Continue to connect to websocket
-                console.log(res.data.message)
-                const newSocket = new WebSocket(`ws://${hostname}:${port}/room/${roomID}`);
-                setSocket(newSocket); // Set the socket in state
-            
-                newSocket.onclose = (event) => {
-                    console.log(`WebSocket closed with code: ${event.code}`);
-                    console.log(`WebSocket closed with reason: ${event.reason}`);
-                }
-                return () => {
-                    newSocket.close();
-                };
+                // This is when room is found and not full. Continue to connect to websocket
+                connectToRoom()
             }).catch((err) => {
                 console.log(err.response.data.message)
                 if (err.response.status == 409){
@@ -49,28 +45,59 @@ const Chat = () => {
                     return
                 } else if (err.response.status == 404){
                     // This is when room not found. Just continue to connect to websocket
-                    const newSocket = new WebSocket(`ws://${hostname}:${port}/room/${roomID}`);
-                    setSocket(newSocket); // Set the socket in state
-                
-                    newSocket.onclose = (event) => {
-                        console.log(`WebSocket closed with code: ${event.code}`);
-                        console.log(`WebSocket closed with reason: ${event.reason}`);
-                    }
-                    return () => {
-                        newSocket.close();
-                    };
+                    connectToRoom()
                 }
             })
     }, [roomID]);
 
+    useEffect(() => {
+        const encrypt = new JSEncrypt({default_key_size: 2048});
+        setUserPublicKey(encrypt.getPublicKey());
+        setUserPrivateKey(encrypt.getPrivateKey());
+    }, []);
+
+    const connectToRoom = () => {
+        const newSocket = new WebSocket(`ws://${hostname}:${port}/room/${roomID}`);
+        setSocket(newSocket); // Set the socket in state
+    
+        newSocket.onclose = (event) => {
+            console.log(`WebSocket closed with code: ${event.code}`);
+            console.log(`WebSocket closed with reason: ${event.reason}`);
+        }
+        return () => {
+            newSocket.close();
+        };
+    }
     
     // Listen for messages
     useEffect(() => {
         if (socket) { // Check if socket is defined
+            socket.onopen = () => {
+                if (!isConnected){
+                    const publicKeyData = getPublicKey()
+                    socket.send(JSON.stringify(publicKeyData));
+                    
+                    const request_public_key = {
+                        "sender": username,
+                        "type": "request_public_key",
+                    }
+                    socket.send(JSON.stringify(request_public_key))
+                    setIsConnected(true)
+                }
+            }   
             socket.onmessage = (event) => {
-                const receivedMessage = JSON.parse(event.data);
-                setMessages((prevMessages) => [...prevMessages, receivedMessage]);
-                console.log(receivedMessage)
+                const receivedData = JSON.parse(event.data);
+
+                if (receivedData.type === "message"){
+                    addMessage(receivedData)
+                }else if (receivedData.type === "request_public_key" && receivedData.sender !== username){
+                    const publicKeyData = getPublicKey()
+                    socket.send(JSON.stringify(publicKeyData));
+                }else if (receivedData.type === "public_key"){
+                    if (receivedData.sender !== username){
+                        setOtherPublicKey(receivedData.key)
+                    }
+                }
             };
 
             return () => {
@@ -87,12 +114,23 @@ const Chat = () => {
 
     const handleSendMessage = () => {
         if (socket && message) { // Check if socket is defined and message is not empty
+            const encrypt = new JSEncrypt({default_key_size: 2048});
+            encrypt.setPublicKey(otherPublicKey);
+            const encryptedMessage = encrypt.encrypt(message);
             const data = {
               "sender": username,
-              "message": message
+              "type": "message",
+              "message": encryptedMessage
             }
             socket.send(JSON.stringify(data));
-            setMessage("");
+
+
+            setMessages((prevMessages) => [...prevMessages, {
+                "sender": username,
+                "type": "message",
+                "message": message
+            }]);
+            setMessage("");   
         }
     }
 
@@ -107,6 +145,29 @@ const Chat = () => {
 
     // Scroll to the bottom whenever new messages arrive or a new message is sent
     useEffect(scrollToBottom, [messages]);
+
+    const getPublicKey = () => {
+        const data = {
+            "sender": username,
+            "type": "public_key",
+            "key": userPublicKey
+        }
+        return data
+    }
+
+    // function add message to the chat
+    const addMessage = (data) => {
+        const decrypt = new JSEncrypt({default_key_size: 2048});
+        // if sender is user that use this browser, don't add message
+        if (data.sender === username){
+            return
+        }
+        // if sender is other user, decrypt message and add to chat
+        decrypt.setPrivateKey(userPrivateKey);
+        const decryptedMessage = decrypt.decrypt(data.message);
+        data.message = decryptedMessage;
+        setMessages((prevMessages) => [...prevMessages, data]);
+        }
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -133,7 +194,7 @@ const Chat = () => {
                                     <div className="max-w-[80%] mx-4 p-2 py-4 mb-2 relative
                                     rounded-3xl bg-gradient-to-r from-orange to-pink text-white">
 
-                                        <div class="break-words" key={index}>{msg.message}</div>
+                                        <div className="break-words" key={index}>{msg.message}</div>
 
                                         {/* <!-- arrow --> */}
                                         <div className="absolute left-0 top-1/2 transform -translate-x-1/2 rotate-45 w-2 h-2 
@@ -149,7 +210,7 @@ const Chat = () => {
                                 <div key={index}>
                                     <div className="flex items-end flex-col mb-4">
                                         <div className="max-w-[80%] mx-4 mb-2 p-2 py-4 relative rounded-3xl bg-[#CACACA] text-gray-800">
-                                            <div class="break-words">{msg.message}</div>
+                                            <div className="break-words">{msg.message}</div>
                                             {/* <!-- arrow --> */}
                                             <div className="absolute right-0 top-1/2 transform translate-x-1/2 rotate-45 w-2 h-2 
                                             bg-[#CACACA]"></div>
