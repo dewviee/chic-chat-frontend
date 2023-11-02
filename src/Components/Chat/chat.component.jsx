@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { IoSendSharp } from 'react-icons/io5';
 import { AiOutlinePicture } from 'react-icons/ai';
 import axios from "axios";
+import JSEncrypt from "jsencrypt";
 import Logo from "../Logo/logo.componnet";
 import ProfilePicture from "../ProfilePicture/profile-picture.component";
 
@@ -19,6 +20,9 @@ const Chat = () => {
 
     const [socket, setSocket] = useState(null); // Declare socket variable
     const [isConnected, setIsConnected] = useState(false);
+
+    const [userPublicKey, setUserPublicKey] = useState("");
+    const [userPrivateKey, setUserPrivateKey] = useState("");
     const [otherPublicKey, setOtherPublicKey] = useState("");
     const chatContainerRef = useRef(null);
 
@@ -45,6 +49,12 @@ const Chat = () => {
                 }
             })
     }, [roomID]);
+
+    useEffect(() => {
+        const encrypt = new JSEncrypt({default_key_size: 2048});
+        setUserPublicKey(encrypt.getPublicKey());
+        setUserPrivateKey(encrypt.getPrivateKey());
+    }, []);
 
     const connectToRoom = () => {
         const newSocket = new WebSocket(`ws://${hostname}:${port}/room/${roomID}`);
@@ -79,12 +89,13 @@ const Chat = () => {
                 const receivedData = JSON.parse(event.data);
 
                 if (receivedData.type === "message"){
-                    setMessages((prevMessages) => [...prevMessages, receivedData]);
+                    addMessage(receivedData)
                 }else if (receivedData.type === "request_public_key" && receivedData.sender !== username){
                     const publicKeyData = getPublicKey()
                     socket.send(JSON.stringify(publicKeyData));
                 }else if (receivedData.type === "public_key"){
                     if (receivedData.sender !== username){
+                        setOtherPublicKey(receivedData.key)
                     }
                 }
             };
@@ -103,13 +114,23 @@ const Chat = () => {
 
     const handleSendMessage = () => {
         if (socket && message) { // Check if socket is defined and message is not empty
+            const encrypt = new JSEncrypt({default_key_size: 2048});
+            encrypt.setPublicKey(otherPublicKey);
+            const encryptedMessage = encrypt.encrypt(message);
             const data = {
               "sender": username,
               "type": "message",
-              "message": message
+              "message": encryptedMessage
             }
             socket.send(JSON.stringify(data));
-            setMessage("");
+
+
+            setMessages((prevMessages) => [...prevMessages, {
+                "sender": username,
+                "type": "message",
+                "message": message
+            }]);
+            setMessage("");   
         }
     }
 
@@ -129,11 +150,24 @@ const Chat = () => {
         const data = {
             "sender": username,
             "type": "public_key",
-            "key": `public_key of: ${username}}`
-            // "message": localStorage.getItem("public_key")
+            "key": userPublicKey
         }
         return data
     }
+
+    // function add message to the chat
+    const addMessage = (data) => {
+        const decrypt = new JSEncrypt({default_key_size: 2048});
+        // if sender is user that use this browser, don't add message
+        if (data.sender === username){
+            return
+        }
+        // if sender is other user, decrypt message and add to chat
+        decrypt.setPrivateKey(userPrivateKey);
+        const decryptedMessage = decrypt.decrypt(data.message);
+        data.message = decryptedMessage;
+        setMessages((prevMessages) => [...prevMessages, data]);
+        }
 
     return (
         <div className="flex flex-col min-h-screen">
