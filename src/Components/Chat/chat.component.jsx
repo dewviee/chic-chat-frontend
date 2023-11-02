@@ -12,12 +12,14 @@ const Chat = () => {
     const hostname = import.meta.env.VITE_SERVER_HOST
     const port = import.meta.env.VITE_SERVER_PORT
 
-
     const [username, setUsername] = useState(""); // State variable for username
     const { roomID } = useParams();
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
+
     const [socket, setSocket] = useState(null); // Declare socket variable
+    const [isConnected, setIsConnected] = useState(false);
+    const [otherPublicKey, setOtherPublicKey] = useState("");
     const chatContainerRef = useRef(null);
 
     // Connect to the websocket server
@@ -60,10 +62,31 @@ const Chat = () => {
     // Listen for messages
     useEffect(() => {
         if (socket) { // Check if socket is defined
+            socket.onopen = () => {
+                if (!isConnected){
+                    const publicKeyData = getPublicKey()
+                    socket.send(JSON.stringify(publicKeyData));
+                    
+                    const request_public_key = {
+                        "sender": username,
+                        "type": "request_public_key",
+                    }
+                    socket.send(JSON.stringify(request_public_key))
+                    setIsConnected(true)
+                }
+            }   
             socket.onmessage = (event) => {
-                const receivedMessage = JSON.parse(event.data);
-                setMessages((prevMessages) => [...prevMessages, receivedMessage]);
-                console.log(receivedMessage)
+                const receivedData = JSON.parse(event.data);
+
+                if (receivedData.type === "message"){
+                    setMessages((prevMessages) => [...prevMessages, receivedData]);
+                }else if (receivedData.type === "request_public_key" && receivedData.sender !== username){
+                    const publicKeyData = getPublicKey()
+                    socket.send(JSON.stringify(publicKeyData));
+                }else if (receivedData.type === "public_key"){
+                    if (receivedData.sender !== username){
+                    }
+                }
             };
 
             return () => {
@@ -101,6 +124,16 @@ const Chat = () => {
 
     // Scroll to the bottom whenever new messages arrive or a new message is sent
     useEffect(scrollToBottom, [messages]);
+
+    const getPublicKey = () => {
+        const data = {
+            "sender": username,
+            "type": "public_key",
+            "key": `public_key of: ${username}}`
+            // "message": localStorage.getItem("public_key")
+        }
+        return data
+    }
 
     return (
         <div className="flex flex-col min-h-screen">
