@@ -29,18 +29,8 @@ const Chat = () => {
 
         axios.get(`${protocol}://${hostname}:${port}/room/${roomID}/check`)
             .then((res) => {
-                // This is when room is found and not full Continue to connect to websocket
-                console.log(res.data.message)
-                const newSocket = new WebSocket(`ws://${hostname}:${port}/room/${roomID}`);
-                setSocket(newSocket); // Set the socket in state
-            
-                newSocket.onclose = (event) => {
-                    console.log(`WebSocket closed with code: ${event.code}`);
-                    console.log(`WebSocket closed with reason: ${event.reason}`);
-                }
-                return () => {
-                    newSocket.close();
-                };
+                // This is when room is found and not full. Continue to connect to websocket
+                connectToRoom()
             }).catch((err) => {
                 console.log(err.response.data.message)
                 if (err.response.status == 409){
@@ -49,20 +39,23 @@ const Chat = () => {
                     return
                 } else if (err.response.status == 404){
                     // This is when room not found. Just continue to connect to websocket
-                    const newSocket = new WebSocket(`ws://${hostname}:${port}/room/${roomID}`);
-                    setSocket(newSocket); // Set the socket in state
-                
-                    newSocket.onclose = (event) => {
-                        console.log(`WebSocket closed with code: ${event.code}`);
-                        console.log(`WebSocket closed with reason: ${event.reason}`);
-                    }
-                    return () => {
-                        newSocket.close();
-                    };
+                    connectToRoom()
                 }
             })
     }, [roomID]);
 
+    const connectToRoom = () => {
+        const newSocket = new WebSocket(`ws://${hostname}:${port}/room/${roomID}`);
+        setSocket(newSocket); // Set the socket in state
+    
+        newSocket.onclose = (event) => {
+            console.log(`WebSocket closed with code: ${event.code}`);
+            console.log(`WebSocket closed with reason: ${event.reason}`);
+        }
+        return () => {
+            newSocket.close();
+        };
+    }
     
     // Listen for messages
     useEffect(() => {
@@ -89,6 +82,7 @@ const Chat = () => {
         if (socket && message) { // Check if socket is defined and message is not empty
             const data = {
               "sender": username,
+              "type": "message",
               "message": message
             }
             socket.send(JSON.stringify(data));
@@ -133,7 +127,7 @@ const Chat = () => {
                                     <div className="max-w-[80%] mx-4 p-2 py-4 mb-2 relative
                                     rounded-3xl bg-gradient-to-r from-orange to-pink text-white">
 
-                                        <div class="break-words" key={index}>{msg.message}</div>
+                                        <div className="break-words" key={index}>{msg.message}</div>
 
                                         {/* <!-- arrow --> */}
                                         <div className="absolute left-0 top-1/2 transform -translate-x-1/2 rotate-45 w-2 h-2 
@@ -149,7 +143,7 @@ const Chat = () => {
                                 <div key={index}>
                                     <div className="flex items-end flex-col mb-4">
                                         <div className="max-w-[80%] mx-4 mb-2 p-2 py-4 relative rounded-3xl bg-[#CACACA] text-gray-800">
-                                            <div class="break-words">{msg.message}</div>
+                                            <div className="break-words">{msg.message}</div>
                                             {/* <!-- arrow --> */}
                                             <div className="absolute right-0 top-1/2 transform translate-x-1/2 rotate-45 w-2 h-2 
                                             bg-[#CACACA]"></div>
