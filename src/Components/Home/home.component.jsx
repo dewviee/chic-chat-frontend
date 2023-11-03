@@ -3,8 +3,12 @@ import { Link, useNavigate} from "react-router-dom";
 import Logo from "../Logo/logo.componnet";
 import ProfilePicture from "../ProfilePicture/profile-picture.component";
 import toast, { Toaster } from 'react-hot-toast';
+import axios from "axios";
 
 const Home = () => {
+  const protocol = import.meta.env.VITE_SERVER_PROTOCOL
+  const hostname = import.meta.env.VITE_SERVER_HOST
+  const port = import.meta.env.VITE_SERVER_PORT
   const navigate = useNavigate();
   const [roomCode, setRoomCode] = useState("");
 
@@ -21,7 +25,16 @@ const Home = () => {
 
   const handleConnectToRoom = () => {
     if (isNumericString(roomCode)) {
-      navigate(`/room/${roomCode}`);
+      axios.get(`${protocol}://${hostname}:${port}/room/${roomCode}/check`)
+      .then((res) => {
+        
+      })
+      .catch((err) => {
+        if (err.response.status === 404) {
+          toast.error("Room not found. Please create a room first")
+        }
+      })
+      
     }else {
       toast.error("Invalid Room Code. Must be numeric")
     }
