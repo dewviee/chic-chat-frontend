@@ -4,6 +4,7 @@ import { IoSendSharp } from 'react-icons/io5';
 import { AiOutlinePicture } from 'react-icons/ai';
 import axios from "axios";
 import JSEncrypt from "jsencrypt";
+import { jwtDecode } from "jwt-decode";
 import Logo from "../Logo/logo.componnet";
 import ProfilePicture from "../ProfilePicture/profile-picture.component";
 
@@ -28,6 +29,12 @@ const Chat = () => {
 
     // Connect to the websocket server
     useEffect(() => {
+        const decoded = jwtDecode(localStorage.getItem("access_token"));
+        setUsername(decoded.username);
+
+        const encrypt = new JSEncrypt({default_key_size: 2048});
+        setUserPublicKey(encrypt.getPublicKey());
+        setUserPrivateKey(encrypt.getPrivateKey());
         axios.get(`${protocol}://${hostname}:${port}/room/${roomID}/check`)
             .then((res) => {
                 // This is when room is found and not full. Continue to connect to websocket
@@ -43,12 +50,7 @@ const Chat = () => {
                     connectToRoom()
                 }
             })
-    }, [roomID]);
-
-    useEffect(() => {
-        const encrypt = new JSEncrypt({default_key_size: 2048});
-        setUserPublicKey(encrypt.getPublicKey());
-        setUserPrivateKey(encrypt.getPrivateKey());
+        
     }, []);
 
     const connectToRoom = () => {
