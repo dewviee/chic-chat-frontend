@@ -28,11 +28,6 @@ const Chat = () => {
 
     // Connect to the websocket server
     useEffect(() => {
-        if (username == ""){
-        const inputUsername = prompt("Please enter something:", "Default Text")
-            setUsername(inputUsername)
-        }              
-
         axios.get(`${protocol}://${hostname}:${port}/room/${roomID}/check`)
             .then((res) => {
                 // This is when room is found and not full. Continue to connect to websocket

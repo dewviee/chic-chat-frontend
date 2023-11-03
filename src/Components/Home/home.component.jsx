@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../Logo/logo.componnet";
 import ProfilePicture from "../ProfilePicture/profile-picture.component";
 
 const Home = () => {
+  useEffect(() => {
+    if (!localStorage.getItem("access_token")) {
+      window.location.href = "/login";
+    }
+  }, []);
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex flex-row">

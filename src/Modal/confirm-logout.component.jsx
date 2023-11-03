@@ -1,8 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 
 const ConfirmLogout = ({ closeModal }) => {
-
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem("access_token");
+        navigate("/login"); // Navigate to the login page
+      };
     return(
         <div className="fixed inset-0 flex items-center justify-center z-50">
             <div
@@ -25,7 +29,7 @@ const ConfirmLogout = ({ closeModal }) => {
                                 bg-gradient-to-r from-green to-blue
                                 rounded-3xl inline-flex px-8 md:px-12 py-2.5 md:py-2.5 mr-0 md:mr-2 mb-2 md:mb-0" 
                                 type="button" 
-                                onClick={closeModal}
+                                onClick={handleLogout}
                             >
                                 Yes
                             </button>
