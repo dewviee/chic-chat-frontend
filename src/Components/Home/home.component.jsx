@@ -1,16 +1,46 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate} from "react-router-dom";
 import Logo from "../Logo/logo.componnet";
 import ProfilePicture from "../ProfilePicture/profile-picture.component";
+import toast, { Toaster } from 'react-hot-toast';
 
 const Home = () => {
+  const navigate = useNavigate();
+  const [roomCode, setRoomCode] = useState("");
+
   useEffect(() => {
     if (!localStorage.getItem("access_token")) {
-      window.location.href = "/login";
+      navigate("/login")
     }
   }, []);
+
+  function isNumericString(inputString) {
+    // Use a regular expression to check if the string consists of only numeric characters
+    return /^\d+$/.test(inputString);
+  }
+
+  const handleConnectToRoom = () => {
+    if (isNumericString(roomCode)) {
+      navigate(`/room/${roomCode}`);
+    }else {
+      toast.error("Invalid Room Code. Must be numeric")
+    }
+  }
+
+  const handleCreateRoom = () => {
+    const roomNumber = generateRandomRoomNumber();
+    navigate(`/room/${roomNumber}`);
+  }
+
+  function generateRandomRoomNumber() {
+    // Generate a random number between 100,000 and 999,999
+    return Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+  }
+  
+
   return (
     <div className="flex flex-col min-h-screen">
+      <div><Toaster/></div>
       <div className="flex flex-row">
        <Logo />
        <ProfilePicture />
@@ -26,12 +56,15 @@ const Home = () => {
               rounded-full pr-20 justify-self-end"
               type="text"
               placeholder="Room Code"
+              value={roomCode}
+              onChange={(e) => setRoomCode(e.target.value)}
               autoFocus
             />
           </div>
-          <Link to={"/createroom"}>
+          {/* <Link to={"/createroom"}> */}
             <div className="ml-5">
-              <button className="bg-indigo-50 rounded-full" type="button">
+              <button onClick={handleCreateRoom}
+              className="bg-indigo-50 rounded-full" type="button">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-16 h-16"
                   fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="5"
@@ -39,15 +72,13 @@ const Home = () => {
                 </svg>
               </button>
             </div>
-          </Link>
+          {/* </Link> */}
         </div>
 
         <div>
-          <Link to={"/room/1"}>
             <button className="font-['Inter'] text-white h-16 py-3 px-16 mt-10
               rounded-full bg-gradient-to-r from-orange to-pink mx-8"
-              type="button">CONFIRM</button>
-          </Link>
+              type="button" onClick={handleConnectToRoom}>CONFIRM</button>
         </div>
 
       </div>
