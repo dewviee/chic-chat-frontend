@@ -1,11 +1,39 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+import React, {useState} from "react";
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from "../../Logo/logo.componnet";
+import axios from "axios";
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const Login = () => {
+    const navigate = useNavigate();
+    
+    const protocol = import.meta.env.VITE_SERVER_PROTOCOL
+    const hostname = import.meta.env.VITE_SERVER_HOST
+    const port = import.meta.env.VITE_SERVER_PORT
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleLogin = () => {
+        axios.post(`${protocol}://${hostname}:${port}/auth/login`, {
+            "username": username,
+            "password": password
+        })
+        .then((res) => {
+            localStorage.setItem("access_token", res.data.access_token);
+            
+            navigate("/");
+        })
+        .catch((err) => {
+            toast.error("Invalid username or password")
+            console.log(err.response)
+        }); 
+    }
     return(
         <div className="flex flex-col min-h-screen">
-           <Logo />
+            <div><Toaster/></div>
+            <Logo />
 
             {/* when responsive in phone will appearance */}
             <div className="md:hidden">
@@ -35,6 +63,8 @@ const Login = () => {
                             autoComplete="username"
                             required
                             placeholder="Username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             className="w-80 border rounded-full md:rounded-2xl py-4 px-5 mt-16 md:mt-8
                             text-gray-700 leading-tight focus:outline-none focus:shadow-md"
                             />
@@ -46,16 +76,18 @@ const Login = () => {
                             autoComplete="password"
                             required
                             placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             className="w-80 border rounded-full md:rounded-2xl py-4 px-5 mt-6
                             text-gray-700 leading-tight focus:outline-none focus:shadow-md"
                             />
 
                             <div>
-                                <Link to={"/"}>
-                                    <button className="font-['Inter'] text-white py-4 px-16 mt-6
+                                <button
+                                onClick={handleLogin}
+                                className="font-['Inter'] text-white py-4 px-16 mt-6
                                     rounded-full bg-gradient-to-r from-orange to-pink mx-8" 
-                                    type="button">LOGIN</button>
-                                </Link>
+                                type="button">LOGIN</button>
                             </div>
 
                             <div className="hidden md:block">

@@ -1,10 +1,42 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+import React, {useState} from "react";
+import { Link, useNavigate} from 'react-router-dom';
 import Logo from "../../Logo/logo.componnet";
+import toast, { Toaster } from 'react-hot-toast';
+import axios from "axios";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const protocol = import.meta.env.VITE_SERVER_PROTOCOL
+  const hostname = import.meta.env.VITE_SERVER_HOST
+  const port = import.meta.env.VITE_SERVER_PORT
+
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleRegister = () => {
+    if (password !== confirmPassword) {
+      toast.error("Password doesn't match")
+      return
+    }
+    axios.post(`${protocol}://${hostname}:${port}/auth/register`, {
+            "username": username,
+            "email": email,
+            "password": password,
+        })
+        .then((res) => {
+            navigate("/login");
+        })
+        .catch((err) => {
+            // toast.error("Invalid username or password")
+            toast.error(err.response.data.msg)
+            console.log(err.response)
+        }); 
+  }
   return(
     <div className="flex flex-col min-h-screen">
+      <div><Toaster/></div>
             <Logo />
 
             {/* when responsive in phone will appearance */}
@@ -35,6 +67,8 @@ const Register = () => {
                             autoComplete="username"
                             required
                             placeholder="Username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             className="w-80 md:w-96 border rounded-full md:rounded-2xl py-4 px-5 mt-6
                             text-gray-700 leading-tight focus:outline-none focus:shadow-md"
                             />
@@ -46,6 +80,8 @@ const Register = () => {
                             autoComplete="email"
                             required
                             placeholder="E-mail"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             className="w-80 md:w-96 border rounded-full md:rounded-2xl py-4 px-5 mt-6
                             text-gray-700 leading-tight focus:outline-none focus:shadow-md"
                             />
@@ -57,6 +93,8 @@ const Register = () => {
                             autoComplete="password"
                             required
                             placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             className="w-80 md:w-96 border rounded-full md:rounded-2xl py-4 px-5 mt-6
                             text-gray-700 leading-tight focus:outline-none focus:shadow-md"
                             />
@@ -68,6 +106,8 @@ const Register = () => {
                             autoComplete="confirmpassword"
                             required
                             placeholder="Confirm Password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             className="w-80 md:w-96 border rounded-full md:rounded-2xl py-4 px-5 mt-6
                             text-gray-700 leading-tight focus:outline-none focus:shadow-md"
                             />
@@ -79,11 +119,11 @@ const Register = () => {
                               type="button">CANCEL</button>
                             </Link>
 
-                            <Link to={"/login"}>
-                              <button className="font-['Inter'] text-white py-4 px-8 md:px-14
-                              rounded-full bg-gradient-to-r from-orange to-pink" 
-                              type="button">CONFIRM</button>
-                            </Link>
+                            <button 
+                            onClick={handleRegister}
+                            className="font-['Inter'] text-white py-4 px-8 md:px-14
+                            rounded-full bg-gradient-to-r from-orange to-pink" 
+                            type="button">CONFIRM</button>
                           </div>
                     </div>
                 </form>
