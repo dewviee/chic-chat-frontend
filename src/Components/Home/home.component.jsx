@@ -33,6 +33,9 @@ const Home = () => {
         if (err.response.status === 404) {
           toast.error("Room not found. Please create a room first")
         }
+        if (err.response.status === 409) {
+          toast.error("Room is full!. Please create a new room")
+        }
       })
       
     }else {
@@ -42,6 +45,7 @@ const Home = () => {
 
   const handleCreateRoom = () => {
     const roomNumber = generateRandomRoomNumber();
+    toast.success(`Room ${roomNumber} created`)
     navigate(`/room/${roomNumber}`);
   }
 
