@@ -1,11 +1,21 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate} from "react-router-dom";
 import { IoPersonCircleSharp } from 'react-icons/io5';
 import { BiSolidEdit } from 'react-icons/bi';
 import Logo from "../Logo/logo.componnet";
 import ConfirmLogout from "../../Modal/confirm-logout.component";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 const Profile = () => {
+    const navigate = useNavigate();
+    const protocol = import.meta.env.VITE_SERVER_PROTOCOL
+    const hostname = import.meta.env.VITE_SERVER_HOST
+    const port = import.meta.env.VITE_SERVER_PORT
+
+    const [email, setEmail] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [profilePicture, setProfilePicture] = useState("");
 
     const [isModalOpen, setModalOpen] = useState(false);
 
@@ -19,6 +29,26 @@ const Profile = () => {
         document.getElementById("popup-modal");
     };
 
+    useEffect(() => {
+        const userProfile = jwtDecode(localStorage.getItem("access_token"));
+        axios.get(`${protocol}://${hostname}:${port}/user/${userProfile.id}`
+        ).then((res) => {
+            setEmail(res.data.user.email || "");
+            setPhoneNumber(res.data.user.phone || "");
+
+            let picturePath = 
+            res.data.user.profile_picture || "/assets/images/userPic.png"
+            if (picturePath != "/assets/images/userPic.png") {
+                const temp = picturePath.split("/");
+                picturePath = temp[temp.length - 1]
+                picturePath = `${protocol}://${hostname}:${port}/user/picture/${picturePath}`
+            }
+            
+            setProfilePicture(picturePath);
+        })
+        .catch((err) => {})
+     }, []);
+
     return (
         <div className="flex flex-col min-h-screen">
             <Logo />
@@ -28,7 +58,15 @@ const Profile = () => {
                 rounded-[60px] bg-transparent md:bg-greylight shadow-[16px_19px_14px_-0_rgba(0,0,0,0.25)] relative" action="#" method="POST">
 
                     <div className="flex flex-row">
-                        <IoPersonCircleSharp size={180} color="white" />
+                    {profilePicture === `${protocol}://${hostname}:${port}/user/picture/default.png` ? (
+                            <IoPersonCircleSharp size={180} color="white" />
+                        ) : (
+                            <img
+                            className="h-40 w-40 mt-3"
+                            src={profilePicture}
+                            alt="UserPic"
+                            />
+                        )}
                         <Link to={"/editprofile"}>
                             <BiSolidEdit size={40} md:size={50} color="white" className="mt-32 md:mt-0 md:absolute top-4 right-4" />
                         </Link>
@@ -54,6 +92,8 @@ const Profile = () => {
                                 type="email"
                                 autoComplete="email"
                                 required
+                                readOnly
+                                value={email}
                                 className="w-full sm:w-[18rem] md:w-96 border rounded-full md:rounded-2xl py-4 px-5 font-['Inter'] 
                                 text-black leading-tight focus:outline-none focus:shadow-md bg-[#C6C6C6]"
                                 />
@@ -64,6 +104,8 @@ const Profile = () => {
                                 type="number"
                                 autoComplete="phoneNumber"
                                 required
+                                readOnly
+                                value={phoneNumber}
                                 className="w-full md:w-96 border rounded-full md:rounded-2xl py-4 px-5 mt-6 font-['Inter'] 
                                 text-black leading-tight focus:outline-none focus:shadow-md bg-[#C6C6C6]"
                                 />
