@@ -221,13 +221,12 @@ const Chat = () => {
                     </div>
 
                     <div className="flex justify-center p-4 bg-gradient-to-r from-orange to-pink">
-                        <div className="mt-2 mr-4">
+                        {/* <div className="mt-2 mr-4">
                             <label className="cursor-pointer text-blue-500">
                                 <AiOutlinePicture size={40} color="white" />
                                 <input className="hidden" type="file" />
                             </label>
-                        </div>
-                      
+                        </div> */}
 
                         {/* <!-- chat send action --> */}
                         <div className="grid justify-items-stretch mt-2 md:mt-2 relative">
