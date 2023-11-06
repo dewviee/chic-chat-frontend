@@ -37,8 +37,8 @@ const Profile = () => {
             setPhoneNumber(res.data.user.phone || "");
 
             let picturePath = 
-            res.data.user.profile_picture || "/assets/images/userPic.png"
-            if (picturePath != "/assets/images/userPic.png") {
+            res.data.user.profile_picture || "/images/userPic.png"
+            if (picturePath != "/images/userPic.png") {
                 const temp = picturePath.split("/");
                 picturePath = temp[temp.length - 1]
                 picturePath = `${protocol}://${hostname}:${port}/user/picture/${picturePath}`
