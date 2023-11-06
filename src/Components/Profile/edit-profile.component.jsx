@@ -45,8 +45,8 @@ const EditProfile = () => {
             }
         ).then((res) => {
             let picturePath = 
-            res.data.user.profile_picture || "/assets/images/userPic.png"
-            if (picturePath != "/assets/images/userPic.png") {
+            res.data.user.profile_picture || "/images/userPic.png"
+            if (picturePath != "/images/userPic.png") {
                 const temp = picturePath.split("/");
                 picturePath = temp[temp.length - 1]
                 picturePath = `${protocol}://${hostname}:${port}/user/picture/${picturePath}`
@@ -95,7 +95,7 @@ const EditProfile = () => {
 
                     <div className="flex flex-col items-center justify-center">
                         <label className="cursor-pointer text-blue-500">
-                            <img className="h-40 w-40 mt-3" src={profilePicture || "/assets/images/userPic.png"} 
+                            <img className="h-40 w-40 mt-3" src={profilePicture || "/images/userPic.png"} 
                             alt="UserPic" />
                             <input id="userPic"
                                 name="userPic" type="file" accept="image/*" 
