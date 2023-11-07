@@ -37,7 +37,7 @@ const Login = () => {
 
             {/* when responsive in phone will appearance */}
             <div className="md:hidden">
-                    <p className="font-['Inter'] font-bold text-[3rem] text-center
+                    <p className="font-inter font-bold text-[3rem] text-center
                     bg-gradient-to-r from-orange to-pink text-transparent bg-clip-text
                     drop-shadow-[6px_5px_5px_rgba(0,0,0,0.7)] absolute inset-x-0 top-[9rem]">LOGIN</p>
             </div>
@@ -49,7 +49,7 @@ const Login = () => {
                 action="#" method="POST">
 
                     <div className="hidden md:block">
-                        <p className="font-['Inter'] font-bold text-[3rem] text-center mt-10
+                        <p className="font-inter font-bold text-[3rem] text-center mt-10
                         bg-gradient-to-r from-orange to-pink text-transparent bg-clip-text
                         drop-shadow-[6px_5px_5px_rgba(0,0,0,0.7)]">LOGIN</p>
                     </div>
@@ -85,16 +85,16 @@ const Login = () => {
                             <div>
                                 <button
                                 onClick={handleLogin}
-                                className="font-['Inter'] text-white py-4 px-16 mt-6
+                                className="font-inter text-white py-4 px-16 mt-6
                                     rounded-full bg-gradient-to-r from-orange to-pink mx-8" 
                                 type="button">LOGIN</button>
                             </div>
 
                             <div className="hidden md:block">
                                 <div className="flex flex-row pt-8">
-                                    <p className="font-['Inter'] font-semibold text-xl text-white">New user ?</p>
+                                    <p className="font-inter font-semibold text-xl text-white">New user ?</p>
                                     <Link to="/register">
-                                        <p className="font-['Inter'] font-semibold text-xl text-red-600 
+                                        <p className="font-inter font-semibold text-xl text-red-600 
                                         drop-shadow-[6px_3px_2px_rgba(0,0,0,0.8)] pl-2">Create an account.</p>
                                     </Link>
                                 </div>
@@ -105,9 +105,9 @@ const Login = () => {
                 {/* when responsive in phone will appearance */}
                 <div className="md:hidden">
                     <div className="flex flex-row justify-center items-center pt-8 absolute inset-x-0 bottom-[12rem]">
-                        <p className="font-['Inter'] font-semibold text-xl text-white">New user ?</p>
+                        <p className="font-inter font-semibold text-xl text-white">New user ?</p>
                         <Link to="/register">
-                            <p className="font-['Inter'] font-semibold text-xl text-red-600 
+                            <p className="font-inter font-semibold text-xl text-red-600 
                             drop-shadow-[6px_3px_2px_rgba(0,0,0,0.8)] pl-2">Create an account.</p>
                         </Link>
                     </div>

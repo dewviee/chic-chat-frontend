@@ -27,7 +27,11 @@ const Home = () => {
     if (isNumericString(roomCode)) {
       axios.get(`${protocol}://${hostname}:${port}/room/${roomCode}/check`)
       .then((res) => {
+        toast.success(`Connecting to Room ${roomCode}`)
         
+        setTimeout(() => {
+          navigate(`/room/${roomCode}`);
+        }, 1000);
       })
       .catch((err) => {
         if (err.response.status === 404) {
@@ -45,15 +49,16 @@ const Home = () => {
 
   const handleCreateRoom = () => {
     const roomNumber = generateRandomRoomNumber();
-    toast.success(`Room ${roomNumber} created`)
-    navigate(`/room/${roomNumber}`);
+    toast.success(`Creating Room ${roomNumber}`)
+    setTimeout(() => {
+      navigate(`/room/${roomNumber}`);
+    }, 1000);
   }
 
   function generateRandomRoomNumber() {
     // Generate a random number between 100,000 and 999,999
     return Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
   }
-  
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -64,12 +69,12 @@ const Home = () => {
       </div>
 
       <div className="flex flex-col flex-1 justify-center items-center mb-20">
-        <img className="w-[20rem]" src="../../assets/images/homePic.png" alt="HomePicture" />
+        <img className="w-[20rem]" src="/images/homePic.png" alt="HomePicture" />
 
         <div className="flex flex-row">
           <div>
             <input
-              className="w-full sm:w-[30rem] md:w-[50rem] h-16 pl-5 font-['Inter'] text-2xl
+              className="w-full sm:w-[30rem] md:w-[50rem] h-16 pl-5 font-inter text-2xl
               rounded-full pr-20 justify-self-end"
               type="text"
               placeholder="Room Code"
@@ -93,7 +98,7 @@ const Home = () => {
         </div>
 
         <div>
-            <button className="font-['Inter'] text-white h-16 py-3 px-16 mt-10
+            <button className="font-inter text-white h-16 py-3 px-16 mt-10
               rounded-full bg-gradient-to-r from-orange to-pink mx-8"
               type="button" onClick={handleConnectToRoom}>CONFIRM</button>
         </div>
