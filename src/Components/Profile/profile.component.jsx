@@ -73,14 +73,14 @@ const Profile = () => {
                     </div>
 
                     <div className="flex flex-col items-center justify-center">
-                        <p className="mt-4 ml-2 font-['Inter'] font-light text-4xl text-white 
+                        <p className="mt-4 ml-2 font-inter font-light text-4xl text-white 
                         drop-shadow-[5px_2px_5px_rgba(0,0,0,0.8)] whitespace-nowrap">Miss. ChicChat</p>
 
                         <div className="flex flex-row mt-16 md:mt-12">
 
                             <div className="flex flex-col">
-                                <p className="font-['Inter'] font-light text-2xl text-white mr-3 mt-2 self-end whitespace-nowrap">E-mail :</p>
-                                <p className="font-['Inter'] font-light text-2xl text-white mr-3 mt-11 self-end whitespace-nowrap">
+                                <p className="font-inter font-light text-2xl text-white mr-3 mt-2 self-end whitespace-nowrap">E-mail :</p>
+                                <p className="font-inter font-light text-2xl text-white mr-3 mt-11 self-end whitespace-nowrap">
                                 {window.innerWidth <= 768 ? "Tel. :" : "Phone Number :"}
                                 </p>
                             </div>
@@ -94,7 +94,7 @@ const Profile = () => {
                                 required
                                 readOnly
                                 value={email}
-                                className="w-full sm:w-[18rem] md:w-96 border rounded-full md:rounded-2xl py-4 px-5 font-['Inter'] 
+                                className="w-full sm:w-[18rem] md:w-96 border rounded-full md:rounded-2xl py-4 px-5 font-inter 
                                 text-black leading-tight focus:outline-none focus:shadow-md bg-[#C6C6C6]"
                                 />
 
@@ -106,14 +106,14 @@ const Profile = () => {
                                 required
                                 readOnly
                                 value={phoneNumber}
-                                className="w-full md:w-96 border rounded-full md:rounded-2xl py-4 px-5 mt-6 font-['Inter'] 
+                                className="w-full md:w-96 border rounded-full md:rounded-2xl py-4 px-5 mt-6 font-inter 
                                 text-black leading-tight focus:outline-none focus:shadow-md bg-[#C6C6C6]"
                                 />
                             </div>
                         </div>
                         
                         <button
-                        className="font-['Inter'] text-white py-4 px-16 mt-8 md:mt-16 rounded-full 
+                        className="font-inter text-white py-4 px-16 mt-8 md:mt-16 rounded-full 
                         bg-gradient-to-r from-orange to-pink mx-8"
                         type="button"
                         onClick={openModal}

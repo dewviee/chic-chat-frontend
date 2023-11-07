@@ -69,7 +69,7 @@ const Home = () => {
         <div className="flex flex-row">
           <div>
             <input
-              className="w-full sm:w-[30rem] md:w-[50rem] h-16 pl-5 font-['Inter'] text-2xl
+              className="w-full sm:w-[30rem] md:w-[50rem] h-16 pl-5 font-inter text-2xl
               rounded-full pr-20 justify-self-end"
               type="text"
               placeholder="Room Code"
@@ -93,7 +93,7 @@ const Home = () => {
         </div>
 
         <div>
-            <button className="font-['Inter'] text-white h-16 py-3 px-16 mt-10
+            <button className="font-inter text-white h-16 py-3 px-16 mt-10
               rounded-full bg-gradient-to-r from-orange to-pink mx-8"
               type="button" onClick={handleConnectToRoom}>CONFIRM</button>
         </div>

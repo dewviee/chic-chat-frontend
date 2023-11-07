@@ -185,7 +185,7 @@ const Chat = () => {
                             return (
                             <div key={index}>
                                 {(index === 0 || messages[index-1].sender !== messages[index].sender) &&(
-                                    <a className="font-['Inter'] block text-xs px-2 mb-1">{msg.sender}</a>
+                                    <a className="font-inter block text-xs px-2 mb-1">{msg.sender}</a>
                                 )}
                                 <div className="flex items-center mb-2">
                                     <div className="max-w-[80%] mx-4 p-2 py-4 mb-2 relative
