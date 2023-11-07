@@ -64,7 +64,7 @@ const Home = () => {
       </div>
 
       <div className="flex flex-col flex-1 justify-center items-center mb-20">
-        <img className="w-[20rem]" src="../../assets/images/homePic.png" alt="HomePicture" />
+        <img className="w-[20rem]" src="/images/homePic.png" alt="HomePicture" />
 
         <div className="flex flex-row">
           <div>
