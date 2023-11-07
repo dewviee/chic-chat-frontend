@@ -27,7 +27,11 @@ const Home = () => {
     if (isNumericString(roomCode)) {
       axios.get(`${protocol}://${hostname}:${port}/room/${roomCode}/check`)
       .then((res) => {
+        toast.success(`Connecting to Room ${roomCode}`)
         
+        setTimeout(() => {
+          navigate(`/room/${roomCode}`);
+        }, 1000);
       })
       .catch((err) => {
         if (err.response.status === 404) {
@@ -45,15 +49,16 @@ const Home = () => {
 
   const handleCreateRoom = () => {
     const roomNumber = generateRandomRoomNumber();
-    toast.success(`Room ${roomNumber} created`)
-    navigate(`/room/${roomNumber}`);
+    toast.success(`Creating Room ${roomNumber}`)
+    setTimeout(() => {
+      navigate(`/room/${roomNumber}`);
+    }, 1000);
   }
 
   function generateRandomRoomNumber() {
     // Generate a random number between 100,000 and 999,999
     return Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
   }
-  
 
   return (
     <div className="flex flex-col min-h-screen">
