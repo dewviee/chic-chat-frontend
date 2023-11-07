@@ -21,6 +21,11 @@ export default {
     },
   },
   plugins: [],
+  extend: {
+    fontFamily: {
+      'inter': ['Inter', 'sans'],
+    },
+  },
 }
 
 
