@@ -13,6 +13,7 @@ const Profile = () => {
     const hostname = import.meta.env.VITE_SERVER_HOST
     const port = import.meta.env.VITE_SERVER_PORT
 
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [profilePicture, setProfilePicture] = useState("");
@@ -33,6 +34,7 @@ const Profile = () => {
         const userProfile = jwtDecode(localStorage.getItem("access_token"));
         axios.get(`${protocol}://${hostname}:${port}/user/${userProfile.id}`
         ).then((res) => {
+            setUsername(res.data.user.username || "")
             setEmail(res.data.user.email || "");
             setPhoneNumber(res.data.user.phone || "");
 
@@ -74,7 +76,7 @@ const Profile = () => {
 
                     <div className="flex flex-col items-center justify-center">
                         <p className="mt-4 ml-2 font-inter font-light text-4xl text-white 
-                        drop-shadow-[5px_2px_5px_rgba(0,0,0,0.8)] whitespace-nowrap">Miss. ChicChat</p>
+                        drop-shadow-[5px_2px_5px_rgba(0,0,0,0.8)] whitespace-nowrap">{username}</p>
 
                         <div className="flex flex-row mt-16 md:mt-12">
 
