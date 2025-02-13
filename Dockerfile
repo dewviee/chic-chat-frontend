@@ -7,6 +7,10 @@ WORKDIR /app
 # # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
+
+# Don't know what need this. but this is required
+RUN apk add --no-cache python3 make g++
+
 # # Install dependencies
 RUN npm install
 RUN npm install -g serve
